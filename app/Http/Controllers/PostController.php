@@ -15,30 +15,30 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $post = Post::create([
+        Post::create([
             'title' => $request->title,
             'body' => $request->body,
         ]);
-        return $post;
+        return Post::all();
     }
 
     public function show($id)
     {
-        $post = Post::find($id);
-        return $post;
+        Post::find($id);
+        return Post::all();
     }
 
     public function update(Request $request, $id)
     {
         $post = Post::find($id);
         $post->update($request->only('title', 'body'));
-        return $post;
+        return Post::all();
     }
 
     public function destroy($id)
     {
         $post = Post::find($id);
         $post->delete();
-        return $post;
+        return Post::all();
     }
 }

@@ -30,13 +30,13 @@
                 </tr>
               </thead>
               <tbody>
-                <template x-for="(post, index) in posts" :key="index">
+                <template x-for="post in posts" :key="index">
                   <tr>
                     <td x-text="post.id"></td>
                     <td x-text="post.title"></td>
                     <td x-text="post.body"></td>
                     <td>
-                      <button @click.prevent="editData(post, index)"
+                      <button @click.prevent="editData(post)"
                         class="btn btn-info">Edit</button>
                       <button @click.prevent="deleteData(post.id)"
                         class="btn btn-danger">Delete</button>
@@ -106,14 +106,14 @@
         saveData() {
           axios.post('/api/post', this.form)
           .then(response => {
-            this.init();
+            this.posts = response.data
             this.form = { 
               title: '', 
               body: '',
             };
           });
         },
-        editData(post, index) {
+        editData(post) {
           this.addMode = false
           this.form.title = post.title
           this.form.body = post.body
@@ -122,7 +122,7 @@
         updateData() {
           axios.put(`/api/post/${this.form.id}`,this.form)
           .then(response => {
-            this.init();
+            this.posts = response.data
             this.form = { 
               title: '', 
               body: '' 
@@ -132,7 +132,7 @@
         deleteData(id) {
           axios.delete(`/api/post/${id}`)
           .then(response => {
-              this.init();
+            this.posts = response.data
           })
         },
         cancelEdit(){
