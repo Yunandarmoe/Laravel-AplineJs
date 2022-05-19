@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Requests\PostStoreRequest;
+use App\Http\Requests\PostUpdateRequest;
 
 class PostController extends Controller
 {
@@ -13,7 +15,7 @@ class PostController extends Controller
         return Post::all(); 
     }
 
-    public function store(Request $request)
+    public function store(PostStoreRequest $request)
     {
         $post = Post::create([
             'title' => $request->title,
@@ -22,7 +24,7 @@ class PostController extends Controller
         return response()->json($post, 200);
     }
 
-    public function update(Request $request, $id)
+    public function update(PostUpdateRequest $request, $id)
     {
         $post = Post::find($id);
         $post->update($request->only('title', 'body'));

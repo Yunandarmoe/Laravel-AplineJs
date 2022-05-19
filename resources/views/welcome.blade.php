@@ -54,14 +54,20 @@
             <span x-show="!addMode">Edit Post</span>
           </div>
           <div class="card-body">
-            <form @submit.prevent="saveData" x-show="addMode">
+            <form @submit.prevent="saveData" x-show="addMode" >
               <div class="form-group">
                 <label>Title</label>
                 <input x-model="form.title" type="text" class="form-control" placeholder="Enter Title">
+                <template x-if="errors.title">
+                  <p class="text-danger" x-text="errors.title"></p>
+                </template>
               </div>
               <div class="form-group">
                 <label>Content</label>
                 <input x-model="form.body" type="text" class="form-control" placeholder="Enter Content">
+                <template x-if="errors.body">
+                  <p class="text-danger" x-text="errors.body"></p>
+                </template>           
               </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -71,10 +77,16 @@
               <div class="form-group">
                 <label>Title</label>
                 <input x-model="form.title" type="text" class="form-control" placeholder="Enter Title">
+                <template x-if="errors.title">
+                  <p class="text-danger" x-text="errors.title"></p>
+                </template>
               </div>
               <div class="form-group">
                 <label>Content</label>
                 <input x-model="form.body" type="text" class="form-control" placeholder="Enter Content">
+                <template x-if="errors.body">
+                  <p class="text-danger" x-text="errors.body"></p>
+                </template>
               </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-primary">Update</button>
@@ -92,9 +104,10 @@
       addMode: true,
         form: {
           id: '',
-          name: '',
-          email: '',
+          title: '',
+          body: '',
         },
+        errors:{},
         posts: [],
         init() {
          this.getData();
@@ -106,6 +119,7 @@
           })
         },
         saveData() {
+          this.errors = {}
           axios.post('/api/post', this.form)
           .then(response => {
             this.getData();
@@ -113,6 +127,15 @@
               title: '', 
               body: '',
             };
+          }).catch(error => {
+            if (error.response) {
+              let errors = error.response.data.errors;
+              for (let key in errors) {
+                console.log(errors[key])
+                this.errors[key] = errors[key][0]
+              }
+              console.log(this.errors);
+            }
           });
         },
         editData(post) {
@@ -122,6 +145,7 @@
           this.form.id = post.id
         },
         updateData() {
+          this.errors = {}
           axios.put(`/api/post/${this.form.id}`,this.form)
           .then(response => {
             this.getData()
@@ -129,6 +153,15 @@
               title: '', 
               body: '' 
             };
+          }).catch(error => {
+            if (error.response) {
+              let errors = error.response.data.errors;
+              for (let key in errors) {
+                console.log(errors[key])
+                this.errors[key] = errors[key][0]
+              }
+              console.log(this.errors);
+            }
           });
         },
         deleteData(id) {
