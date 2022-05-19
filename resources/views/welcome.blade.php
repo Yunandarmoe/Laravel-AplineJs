@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Alpine JS CRUD</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-  integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <script defer src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-  <div class="container-fluid mt-5" x-data="postCrud()">
+  <div class="container-fluid mt-5" x-data="postCrud">
     <h2>CRUD with Laravel and Alpine JS</h2>
     <div class="row">
       <div class="col-8">
@@ -36,9 +35,9 @@
                     <td x-text="post.title"></td>
                     <td x-text="post.body"></td>
                     <td>
-                      <button @click.prevent="editData(post)"
+                      <button @click="editData(post)"
                         class="btn btn-info">Edit</button>
-                      <button @click.prevent="deleteData(post.id)"
+                      <button @click="deleteData(post.id)"
                         class="btn btn-danger">Delete</button>
                     </td>
                   </tr>
@@ -79,7 +78,7 @@
               </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-primary">Update</button>
-                <button type="button" class="btn btn-danger" @click.prevent="cancelEdit">Cancel</button>
+                <button type="button" class="btn btn-danger" @click="cancelEdit">Cancel</button>
               </div>
             </form>
           </div>
@@ -98,6 +97,9 @@
         },
         posts: [],
         init() {
+         this.getData();
+        },
+        getData() {
           axios.get('/api/post')
           .then(response => {
             this.posts = response.data;
@@ -106,7 +108,7 @@
         saveData() {
           axios.post('/api/post', this.form)
           .then(response => {
-            this.posts = response.data
+            this.getData();
             this.form = { 
               title: '', 
               body: '',
@@ -122,7 +124,7 @@
         updateData() {
           axios.put(`/api/post/${this.form.id}`,this.form)
           .then(response => {
-            this.posts = response.data
+            this.getData()
             this.form = { 
               title: '', 
               body: '' 
@@ -132,7 +134,7 @@
         deleteData(id) {
           axios.delete(`/api/post/${id}`)
           .then(response => {
-            this.posts = response.data
+            this.getData();
           })
         },
         cancelEdit(){
