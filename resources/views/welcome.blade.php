@@ -131,10 +131,8 @@
             if (error.response) {
               let errors = error.response.data.errors;
               for (let key in errors) {
-                console.log(errors[key])
                 this.errors[key] = errors[key][0]
               }
-              console.log(this.errors);
             }
           });
         },
@@ -157,10 +155,8 @@
             if (error.response) {
               let errors = error.response.data.errors;
               for (let key in errors) {
-                console.log(errors[key])
                 this.errors[key] = errors[key][0]
               }
-              console.log(this.errors);
             }
           });
         },
