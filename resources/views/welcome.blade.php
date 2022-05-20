@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Alpine JS CRUD</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-  <script defer src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
 <body>
   <div class="container-fluid mt-5" x-data="postCrud">
@@ -158,5 +156,6 @@
     }
   }
 </script>
+<script src="{{ mix('js/app.js') }}" defer></script>
 </body>
 </html>
